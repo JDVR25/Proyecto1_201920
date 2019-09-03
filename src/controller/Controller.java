@@ -12,10 +12,12 @@ public class Controller {
 
 	/* Instancia del Modelo*/
 	private MVCModelo modelo;
-	
+
 	/* Instancia de la Vista*/
 	private MVCView view;
-	
+
+	private boolean cargaRealizada;
+
 	/**
 	 * Crear la vista y el modelo del proyecto
 	 * @param capacidad tamaNo inicial del arreglo
@@ -24,8 +26,9 @@ public class Controller {
 	{
 		view = new MVCView();
 		modelo = new MVCModelo();
+		cargaRealizada = false;
 	}
-		
+
 	public void run() 
 	{
 		Scanner lector = new Scanner(System.in);
@@ -39,11 +42,18 @@ public class Controller {
 			int option = lector.nextInt();
 			switch(option){
 			case 1:
-				System.out.println("--------- \nSe cargaran los datos: ");
-				modelo = new MVCModelo(); 
-				modelo.cargarDatos();
-				System.out.println("Datos cargados");
-				System.out.println("Numero de viajes cargados: " + modelo.darNumViajes());
+				if(!cargaRealizada)
+				{
+					System.out.println("--------- \nSe cargaran los datos: ");
+					modelo = new MVCModelo(); 
+					modelo.cargarDatos();
+					System.out.println("Datos cargados");
+					System.out.println("Numero de viajes cargados: " + modelo.darNumViajes());
+				}
+				else
+				{
+					System.out.println("--------- \nLos datos ya se cargaron");
+				}
 				break;
 
 			case 2:
@@ -99,7 +109,7 @@ public class Controller {
 					System.out.println("Tanto la hora como el numero de datos deben ser numeros");
 				}
 				break;
-				
+
 			case 4: 
 				System.out.println("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();
