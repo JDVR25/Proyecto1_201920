@@ -24,6 +24,8 @@ public abstract class ListaEncadenadaAbstracta<E> implements IEstructura<E>, Ser
 	 * Primer nodo de la lista.
 	 */
 	protected Nodo<E> primerNodo;
+	
+	protected Nodo<E> ultimoNodo;
 
 	@SuppressWarnings("unchecked")
 	public Object[] toArray() 

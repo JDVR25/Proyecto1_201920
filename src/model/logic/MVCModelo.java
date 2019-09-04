@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
+import model.data_structures.ListaSencillamenteEncadenada;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 
@@ -16,26 +17,30 @@ public class MVCModelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IEstructura<Viaje> pila;
+	private IEstructura<Viaje> horas;
 
-	private IEstructura<Viaje> fila;
+	private IEstructura<Viaje> dias;
+	
+	private IEstructura<Viaje> mes;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public MVCModelo()
 	{
-		pila = new Stack<Viaje>();
+		horas = new ListaSencillamenteEncadenada<Viaje>();
 
-		fila = new Queue<Viaje>();
+		dias = new ListaSencillamenteEncadenada<Viaje>();
+		
+		mes = new ListaSencillamenteEncadenada<Viaje>();
 	}
 
-	public void cargarDatos()
+	public void cargarDatos(int trimestre)
 	{
 		CSVReader reader = null;
 		try 
 		{
-			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-1-All-HourlyAggregate"));
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-HourlyAggregate"));
 			for(String[] param : reader)
 			{
 				try
@@ -74,58 +79,5 @@ public class MVCModelo {
 		}
 	}
 
-	public int darNumViajes()
-	{
-		return pila.size();
-	}
-
-	public Stack<Viaje> darUltimosNViajes(int hour, int howManyYouWant)
-	{
-		Stack<Viaje> stack1 = new Stack<Viaje>(); 
-		int i = 0;
-		while (i < howManyYouWant && !pila.isEmpty() )
-		{
-			Viaje temp = ((Stack<Viaje>) pila).pop(); 
-			if (temp.darHora() == hour)
-			{
-				stack1.push(temp);
-				i++; 
-			}
-		}
-		return stack1; 
-	}
-
-	public Queue<Viaje> eliminateCluster(int hour)
-	{
-		Queue<Viaje> fila1 = new Queue<Viaje>(); 
-		Queue<Viaje> fila2 = new Queue<Viaje>(); 
-		for(int i = 0; i < fila.size(); i++ )
-		{
-			Viaje temp = ((Queue<Viaje>) fila).dequeue();
-			if (temp.darHora() == hour && fila2.isEmpty())
-			{
-				fila2.enqueue(temp);
-			}
-			else if (fila2.getFirst().darHora() < temp.darHora())
-			{
-				fila2.enqueue(temp);
-			}
-			else
-			{
-				if(fila2.size() > fila1.size())
-				{
-					fila1 = fila2; 
-				}
-
-				fila2 = new Queue<Viaje>(); 
-			}
-		}
-
-		if(fila2.size() > fila1.size())
-		{
-			fila1 = fila2; 
-		}
-
-		return fila1; 
-	}
+	
 }
