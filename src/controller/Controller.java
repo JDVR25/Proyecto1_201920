@@ -2,8 +2,6 @@ package controller;
 
 import java.util.Scanner;
 
-import model.data_structures.Queue;
-import model.data_structures.Stack;
 import model.logic.MVCModelo;
 import model.logic.Viaje;
 import view.MVCView;
@@ -50,7 +48,11 @@ public class Controller {
 					modelo.cargarDatos(Integer.parseInt(dato));
 					System.out.println("--------- \nSe cargaran los datos: ");
 					System.out.println("Datos cargados:");
-					System.out.println("Numero de viajes cargados: " + modelo.darNumViajes());
+					System.out.println("Total de viajes por mes: " + modelo.darNumViajesMes());
+					System.out.println("Total de viajes por dias: " + modelo.darNumViajesDia());
+					System.out.println("Total de viajes por horas: " + modelo.darNumViajesHora());
+					System.out.println("Zona con menor identificador: " + modelo.darZonaMenor());
+					System.out.println("Zona con menor identificador: " + modelo.darZonaMayor());
 				}
 				else
 				{

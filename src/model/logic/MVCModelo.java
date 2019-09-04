@@ -108,6 +108,31 @@ public class MVCModelo {
 
 		}
 	}
-
 	
+	public int darNumViajesMes()
+	{
+		return mes.size();
+	}
+	
+	public int darNumViajesHora()
+	{
+		return horas.size();
+	}
+	
+	public int darNumViajesDia()
+	{
+		return dias.size();
+	}
+	
+	public int darZonaMenor()
+	{
+		//Todo pendiente
+		return 0;
+	}
+	
+	public int darZonaMayor()
+	{
+		//Todo pendiente
+		return 0;
+	}
 }
