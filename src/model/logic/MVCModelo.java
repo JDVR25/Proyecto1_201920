@@ -6,8 +6,7 @@ import java.io.IOException;
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
 import model.data_structures.ListaSencillamenteEncadenada;
-import model.data_structures.Queue;
-import model.data_structures.Stack;
+
 
 /**
  * Definicion del modelo del mundo
@@ -40,7 +39,7 @@ public class MVCModelo {
 		CSVReader reader = null;
 		try 
 		{
-			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-HourlyAggregate"));
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + trimestre + "-All-HourlyAggregate"));
 			for(String[] param : reader)
 			{
 				try
@@ -48,8 +47,39 @@ public class MVCModelo {
 					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
 							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
 							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
-					((Stack<Viaje>) pila).push(nuevo);
-					((Queue<Viaje>) fila).enqueue(nuevo);
+					horas.addLast(nuevo);
+				}
+				catch(NumberFormatException e)
+				{
+
+				}
+			}
+			
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-MonthlyAggregate"));
+			for(String[] param : reader)
+			{
+				try
+				{
+					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
+							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
+							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
+					mes.addLast(nuevo);
+				}
+				catch(NumberFormatException e)
+				{
+
+				}
+			}
+			
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-WeeklyAggregate"));
+			for(String[] param : reader)
+			{
+				try
+				{
+					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
+							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
+							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
+					dias.addLast(nuevo);
 				}
 				catch(NumberFormatException e)
 				{

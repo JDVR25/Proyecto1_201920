@@ -44,11 +44,12 @@ public class Controller {
 			case 1:
 				if(!cargaRealizada)
 				{
-					System.out.println("--------- \nSe cargaran los datos: ");
+					System.out.println("--------- \nIngrese un trimestre como un numero");
 					dato = lector.next();
 					modelo = new MVCModelo(); 
-					modelo.cargarDatos();
-					System.out.println("Datos cargados");
+					modelo.cargarDatos(Integer.parseInt(dato));
+					System.out.println("--------- \nSe cargaran los datos: ");
+					System.out.println("Datos cargados:");
 					System.out.println("Numero de viajes cargados: " + modelo.darNumViajes());
 				}
 				else

@@ -6,7 +6,7 @@ public class Viaje
 	
 	private int idZonaDestino;
 	
-	private int hora;
+	private int hora_mes_dia;
 	
 	private double tiempoPromedioViaje;
 	
@@ -23,7 +23,7 @@ public class Viaje
 		
 		idZonaDestino = dsTID;
 		
-		hora = hour;
+		hora_mes_dia = hour;
 		
 		tiempoPromedioViaje = travelTime;
 		
@@ -46,7 +46,7 @@ public class Viaje
 	
 	public int darHora()
 	{
-		return hora;
+		return hora_mes_dia;
 	}
 	
 	public double darTiempoViaje()
