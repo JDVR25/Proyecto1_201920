@@ -127,12 +127,14 @@ public class MVCModelo {
 	public int darZonaMenor()
 	{
 		//Todo pendiente
-		return 0;
+		int respuesta = 0;
+		return respuesta;
 	}
 	
 	public int darZonaMayor()
 	{
 		//Todo pendiente
-		return 0;
+		int respuesta = 0;
+		return respuesta;
 	}
 }
