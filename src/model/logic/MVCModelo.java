@@ -39,7 +39,7 @@ public class MVCModelo {
 		CSVReader reader = null;
 		try 
 		{
-			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + trimestre + "-All-HourlyAggregate"));
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + trimestre + "-All-HourlyAggregate.csv"));
 			for(String[] param : reader)
 			{
 				try
@@ -55,7 +55,7 @@ public class MVCModelo {
 				}
 			}
 			
-			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-MonthlyAggregate"));
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-MonthlyAggregate.csv"));
 			for(String[] param : reader)
 			{
 				try
@@ -71,7 +71,7 @@ public class MVCModelo {
 				}
 			}
 			
-			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-WeeklyAggregate"));
+			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-WeeklyAggregate.csv"));
 			for(String[] param : reader)
 			{
 				try
