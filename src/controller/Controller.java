@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Scanner;
 
+import model.data_structures.IEstructura;
 import model.logic.MVCModelo;
 import model.logic.Viaje;
 import view.MVCView;
@@ -70,6 +71,7 @@ public class Controller {
 						int mes = Integer.parseInt(lector.next());
 						if(mes > 0 && mes <= 12)
 						{
+							//Sujeto a cambios segun respuesta del profesor por correo
 							System.out.println("--------- \nIngrese el identificador de la zona de origen");
 							int zonaOrigen = Integer.parseInt(lector.next());
 
@@ -105,25 +107,70 @@ public class Controller {
 
 			case 3:
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el mes");
+						int mes = Integer.parseInt(lector.next());
+						if(mes > 0 && mes <= 12)
+						{
+							System.out.println("--------- \nIngrese la cantidad de viajes que desea consultar");
+							int cantidad = Integer.parseInt(lector.next());
+							IEstructura<Viaje> masDemorados = modelo.viajesMayorTiempoMes(mes, cantidad);
+							for(Viaje temp: masDemorados)
+							{
+								System.out.println("Zona de origen: " + temp.darIDOrigen() + " Zona destino: " + temp.darIdDestino() + " Tiempo Promedio: " + temp.darTiempoViaje() + " Desviacion Estandar: " + temp.darDesviacionTiempo());
+							}
+						}
+						else
+						{
+							System.out.println("--------- \nEl mes debe ser en numero entre 1 y 12 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
 			case 4: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el mes");
+						int mes = Integer.parseInt(lector.next());
+						if(mes > 0 && mes <= 12)
+						{
+							System.out.println("--------- \nIngrese el identificador de una zona");
+							int zona1 = Integer.parseInt(lector.next());
+							
+							System.out.println("--------- \nIngrese el identificador de la zona menor del rango de zonas");
+							int zonaMenor = Integer.parseInt(lector.next());
+							
+							System.out.println("--------- \nIngrese el identificador de la zona mayor del rango de zonas");
+							int zonaMayor = Integer.parseInt(lector.next());
+						}
+						else
+						{
+							System.out.println("--------- \nEl mes debe ser en numero entre 1 y 12 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
@@ -133,6 +180,7 @@ public class Controller {
 				{
 					if(cargaRealizada)
 					{
+						//Sujeto a cambios segun respuesta del profesor por correo
 						System.out.println("--------- \nIngrese el dia");
 						int dia = Integer.parseInt(lector.next());
 						if(dia > 0 && dia <= 7)
@@ -172,61 +220,153 @@ public class Controller {
 
 			case 6: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el dia");
+						int dia = Integer.parseInt(lector.next());
+						if(dia > 0 && dia <= 7)
+						{
+							System.out.println("--------- \nIngrese la cantidad de viajes que desea consultar");
+							int cantidad = Integer.parseInt(lector.next());
+							IEstructura<Viaje> masDemorados = modelo.viajesMayorTiempoDia(dia, cantidad);
+							for(Viaje temp: masDemorados)
+							{
+								System.out.println("Zona de origen: " + temp.darIDOrigen() + " Zona destino: " + temp.darIdDestino() + " Tiempo Promedio: " + temp.darTiempoViaje() + " Desviacion Estandar: " + temp.darDesviacionTiempo());
+							}
+						}
+						else
+						{
+							System.out.println("--------- \nEl dia debe ser en numero entre 1 y 7 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
 			case 7: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el dia");
+						int dia = Integer.parseInt(lector.next());
+						if(dia > 0 && dia <= 7)
+						{
+							
+						}
+						else
+						{
+							System.out.println("--------- \nEl dia debe ser en numero entre 1 y 7 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
 			case 8: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese la hora");
+						int hora = Integer.parseInt(lector.next());
+						if(hora >= 0 && hora < 24)
+						{
+							//En lo posible no hacer antes de que el profesor responda
+						}
+						else
+						{
+							System.out.println("--------- \nLa hora debe ser en numero entre 0 y 23 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
 			case 9: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese la hora");
+						int hora = Integer.parseInt(lector.next());
+						if(hora >= 0 && hora < 24)
+						{
+							System.out.println("--------- \nIngrese la cantidad de viajes que desea consultar");
+							int cantidad = Integer.parseInt(lector.next());
+							IEstructura<Viaje> masDemorados = modelo.viajesMayorTiempoHora(hora, cantidad);
+							for(Viaje temp: masDemorados)
+							{
+								System.out.println("Zona de origen: " + temp.darIDOrigen() + " Zona destino: " + temp.darIdDestino() + " Tiempo Promedio: " + temp.darTiempoViaje() + " Desviacion Estandar: " + temp.darDesviacionTiempo());
+							}
+						}
+						else
+						{
+							System.out.println("--------- \nLa hora debe ser en numero entre 0 y 23 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 
 			case 10: 
 				//TODO pendiente
-				if(cargaRealizada)
+				try
 				{
-
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese la hora");
+						int hora = Integer.parseInt(lector.next());
+						if(hora >= 0 && hora < 24)
+						{
+							
+						}
+						else
+						{
+							System.out.println("--------- \nLa hora debe ser en numero entre 0 y 23 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
 				}
-				else
+				catch (NumberFormatException e)
 				{
-					System.out.println("--------- \nNo se han cargado los datos");
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
 				}
 				break;
 

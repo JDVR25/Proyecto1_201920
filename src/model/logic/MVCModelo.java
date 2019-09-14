@@ -140,6 +140,7 @@ public class MVCModelo {
 	}
 
 	//TODO modificar doc requerimientos funcionales con correciones
+	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 2
 	public Viaje consultarViajeMes(int mes, int idOrigen, int idDestino)
 	{
@@ -148,6 +149,7 @@ public class MVCModelo {
 		return respuesta;
 	}
 
+	//Se puede usar cola para lucirse
 	//Requerimiento funcional 3
 	public IEstructura<Viaje> viajesMayorTiempoMes(int mes, int cuantos)
 	{
@@ -156,8 +158,10 @@ public class MVCModelo {
 		return respuesta;
 	}
 
-	//Requerimiento funcional 4 no requiere metodo adicional
+	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
+	//Requerimiento funcional 4 no requiere metodo adicional(usa el metodo que usa req1)
 
+	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 5
 	public Viaje consultarViajeDia(int dia, int idOrigen, int idDestino)
 	{
@@ -166,6 +170,7 @@ public class MVCModelo {
 		return respuesta;
 	}
 	
+	//Se puede usar cola para lucirse
 	//Requerimiento funcional 6
 	public IEstructura<Viaje> viajesMayorTiempoDia(int dia, int cuantos)
 	{
@@ -174,8 +179,10 @@ public class MVCModelo {
 		return respuesta;
 	}
 	
-	//Requerimiento funcional 7 no requiere metodo adicional
+	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
+	//Requerimiento funcional 7 no requiere metodo adicional(usa el metodo que esta en req 5)
 
+	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 8
 	public IEstructura<Viaje> viajesFranjaHoraria(int horaInicial, int horaFinal, int idOrigen, int idDestino)
 	{
