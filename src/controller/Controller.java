@@ -62,38 +62,172 @@ public class Controller {
 
 			case 2:
 				//TODO pendiente
+				try
+				{
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el mes");
+						int mes = Integer.parseInt(lector.next());
+						if(mes > 0 && mes <= 12)
+						{
+							System.out.println("--------- \nIngrese el identificador de la zona de origen");
+							int zonaOrigen = Integer.parseInt(lector.next());
+
+							System.out.println("--------- \nIngrese el identificador de la zona de destino");
+							int zonaDestino = Integer.parseInt(lector.next());
+
+							Viaje elViaje = modelo.consultarViajeMes(mes, zonaOrigen, zonaDestino);
+							if(elViaje != null)
+							{
+								System.out.println("Tiempo promedio : " + elViaje.darTiempoViaje());
+								System.out.println("Desviacion estandar del tiempo promedio : " + elViaje.darTiempoViaje());
+							}
+							else
+							{
+								System.out.println("No hay informacion de los viajes que durante el mes " + mes + " que salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
+							}
+						}
+						else
+						{
+							System.out.println("--------- \nEl mes debe ser en numero entre 1 y 12 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
+				}
+				catch (NumberFormatException e)
+				{
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
+				}
 				break;
 
 			case 3:
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 4: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 5: 
 				//TODO pendiente
+				try
+				{
+					if(cargaRealizada)
+					{
+						System.out.println("--------- \nIngrese el dia");
+						int dia = Integer.parseInt(lector.next());
+						if(dia > 0 && dia <= 7)
+						{
+							System.out.println("--------- \nIngrese el identificador de la zona de origen");
+							int zonaOrigen = Integer.parseInt(lector.next());
+
+							System.out.println("--------- \nIngrese el identificador de la zona de destino");
+							int zonaDestino = Integer.parseInt(lector.next());
+
+							Viaje elViaje = modelo.consultarViajeDia(dia, zonaOrigen, zonaDestino);
+							if(elViaje != null)
+							{
+								System.out.println("Tiempo promedio : " + elViaje.darTiempoViaje());
+								System.out.println("Desviacion estandar del tiempo promedio : " + elViaje.darTiempoViaje());
+							}
+							else
+							{
+								System.out.println("No hay informacion de los viajes que durante el dia " + dia + " que salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
+							}
+						}
+						else
+						{
+							System.out.println("--------- \nEl dia debe ser en numero entre 1 y 7 ");
+						}
+					}
+					else
+					{
+						System.out.println("--------- \nNo se han cargado los datos");
+					}
+				}
+				catch (NumberFormatException e)
+				{
+					System.out.println("--------- \nDebe ingresar los datos como numeros enteros");
+				}
 				break;
-				
+
 			case 6: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 7: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 8: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 9: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
-				
+
 			case 10: 
 				//TODO pendiente
+				if(cargaRealizada)
+				{
+
+				}
+				else
+				{
+					System.out.println("--------- \nNo se han cargado los datos");
+				}
 				break;
 
 			case 11: 
