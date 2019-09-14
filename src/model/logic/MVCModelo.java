@@ -19,7 +19,7 @@ public class MVCModelo {
 	private IEstructura<Viaje> horas;
 
 	private IEstructura<Viaje> dias;
-	
+
 	private IEstructura<Viaje> mes;
 
 	/**
@@ -30,10 +30,11 @@ public class MVCModelo {
 		horas = new ListaSencillamenteEncadenada<Viaje>();
 
 		dias = new ListaSencillamenteEncadenada<Viaje>();
-		
+
 		mes = new ListaSencillamenteEncadenada<Viaje>();
 	}
 
+	//Requisito funcional 1
 	public void cargarDatos(int trimestre)
 	{
 		CSVReader reader = null;
@@ -54,7 +55,7 @@ public class MVCModelo {
 
 				}
 			}
-			
+
 			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-MonthlyAggregate.csv"));
 			for(String[] param : reader)
 			{
@@ -70,7 +71,7 @@ public class MVCModelo {
 
 				}
 			}
-			
+
 			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+ trimestre + "-All-WeeklyAggregate.csv"));
 			for(String[] param : reader)
 			{
@@ -108,33 +109,95 @@ public class MVCModelo {
 
 		}
 	}
-	
+
 	public int darNumViajesMes()
 	{
 		return mes.size();
 	}
-	
+
 	public int darNumViajesHora()
 	{
 		return horas.size();
 	}
-	
+
 	public int darNumViajesDia()
 	{
 		return dias.size();
 	}
-	
+
 	public int darZonaMenor()
 	{
-		//Todo pendiente
+		//TODO pendiente
 		int respuesta = 0;
+		return respuesta;
+	}
+
+	public int darZonaMayor()
+	{
+		//TODO pendiente
+		int respuesta = 0;
+		return respuesta;
+	}
+
+	//TODO modificar doc requerimientos funcionales con correciones
+	//Requerimiento funcional 2
+	public Viaje consultarViajeMes(int mes, int idOrigen, int idDestino)
+	{
+		//TODO pendiente
+		Viaje respuesta = null;
+		return respuesta;
+	}
+
+	//Requerimiento funcional 3
+	public IEstructura<Viaje> viajesMayorTiempoMes(int mes, int cuantos)
+	{
+		//TODO pendiente
+		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		return respuesta;
+	}
+
+	//Requerimiento funcional 4 no requiere metodo adicional
+
+	//Requerimiento funcional 5
+	public Viaje consultarViajeDia(int dia, int idOrigen, int idDestino)
+	{
+		//TODO pendiente
+		Viaje respuesta = null;
 		return respuesta;
 	}
 	
-	public int darZonaMayor()
+	//Requerimiento funcional 6
+	public IEstructura<Viaje> viajesMayorTiempoDia(int dia, int cuantos)
 	{
-		//Todo pendiente
-		int respuesta = 0;
+		//TODO pendiente
+		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
 		return respuesta;
 	}
+	
+	//Requerimiento funcional 7 no requiere metodo adicional
+
+	//Requerimiento funcional 8
+	public IEstructura<Viaje> viajesFranjaHoraria(int horaInicial, int horaFinal, int idOrigen, int idDestino)
+	{
+		//TODO pendiente
+		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		return respuesta;
+	}
+	
+	//Requerimiento funcional 9
+	public IEstructura<Viaje> viajesMayorTiempoHora(int hora, int cuantos)
+	{
+		//TODO pendiente
+		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		return respuesta;
+	}
+	
+	//Requerimiento funcional 10
+	public Viaje consultarViajeHora(int hora, int idOrigen, int idDestino)
+	{
+		//TODO pendiente
+		Viaje respuesta = null;
+		return respuesta;
+	}
+	
 }
