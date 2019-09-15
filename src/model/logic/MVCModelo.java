@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
 import model.data_structures.ListaSencillamenteEncadenada;
+import model.data_structures.Stack;
 
 
 /**
@@ -34,7 +35,7 @@ public class MVCModelo {
 		mes = new ListaSencillamenteEncadenada<Viaje>();
 	}
 
-	//Requisito funcional 1
+	//Requerimiento funcional 1
 	public void cargarDatos(int trimestre)
 	{
 		CSVReader reader = null;
@@ -160,6 +161,23 @@ public class MVCModelo {
 
 	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
 	//Requerimiento funcional 4 no requiere metodo adicional(usa el metodo que usa req1)
+	public Stack<Viaje>[] darViajesRangoZonasMes(int mes, int zona, int zonaMenor, int zonaMayor)
+	{
+		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
+		Stack<Viaje> zonaRango = new Stack<Viaje>();
+		Stack<Viaje> rangoZona = new Stack<Viaje>();
+		
+		viajes[0] = zonaRango;
+		viajes[1] = rangoZona;
+		
+		for(int i = zonaMayor; i >= zonaMenor; i--)
+		{
+			zonaRango.push(consultarViajeMes(mes, zona, i));
+			rangoZona.push(consultarViajeMes(mes, i, zona));
+		}
+		
+		return viajes;
+	}
 
 	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 5

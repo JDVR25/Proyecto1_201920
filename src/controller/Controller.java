@@ -2,7 +2,10 @@ package controller;
 
 import java.util.Scanner;
 
+import com.sun.tracing.dtrace.ModuleName;
+
 import model.data_structures.IEstructura;
+import model.data_structures.Stack;
 import model.logic.MVCModelo;
 import model.logic.Viaje;
 import view.MVCView;
@@ -16,6 +19,10 @@ public class Controller {
 	private MVCView view;
 
 	private boolean cargaRealizada;
+	
+	private int zonaMenorExistente;
+	
+	private int zonaMayorExistente;
 
 	/**
 	 * Crear la vista y el modelo del proyecto
@@ -47,13 +54,15 @@ public class Controller {
 					dato = lector.next();
 					modelo = new MVCModelo(); 
 					modelo.cargarDatos(Integer.parseInt(dato));
+					zonaMenorExistente = modelo.darZonaMenor();
+					zonaMayorExistente = modelo.darZonaMayor();
 					System.out.println("--------- \nSe cargaran los datos: ");
 					System.out.println("Datos cargados:");
 					System.out.println("Total de viajes por mes: " + modelo.darNumViajesMes());
 					System.out.println("Total de viajes por dias: " + modelo.darNumViajesDia());
 					System.out.println("Total de viajes por horas: " + modelo.darNumViajesHora());
-					System.out.println("Zona con menor identificador: " + modelo.darZonaMenor());
-					System.out.println("Zona con menor identificador: " + modelo.darZonaMayor());
+					System.out.println("Zona con menor identificador: " + zonaMenorExistente);
+					System.out.println("Zona con mayor identificador: " + zonaMayorExistente);
 				}
 				else
 				{
@@ -151,12 +160,38 @@ public class Controller {
 						{
 							System.out.println("--------- \nIngrese el identificador de una zona");
 							int zona1 = Integer.parseInt(lector.next());
-							
+
 							System.out.println("--------- \nIngrese el identificador de la zona menor del rango de zonas");
 							int zonaMenor = Integer.parseInt(lector.next());
-							
+
 							System.out.println("--------- \nIngrese el identificador de la zona mayor del rango de zonas");
 							int zonaMayor = Integer.parseInt(lector.next());
+							if(zonaMenor <= zonaMayor)
+							{
+								if(zonaMenor < zonaMenorExistente)
+								{
+									while(zonaMenor < zonaMenorExistente)
+									{
+										System.out.println("No hay viajes de " + zona1 + " a " + zonaMenor + " vs No hay viajes de " + zonaMenor + " a " + zona1);
+										zonaMenor++;
+									}
+								}
+								Stack<Viaje>[] pilas = modelo.darViajesRangoZonasMes(mes, zona1, zonaMenor, zonaMayor < zonaMayorExistente?zonaMayor: zonaMayorExistente);
+								Viaje zonaRango = null;
+								Viaje rangoZona = null;
+								while(!pilas[0].isEmpty() && !pilas[1].isEmpty())
+								{
+									zonaRango = pilas[0].pop();
+									rangoZona = pilas[1].pop();
+									
+									String lineaZonaRango = "";
+									String lineaRangoZona = "";
+								}
+							}
+							else
+							{
+								System.out.println("--------- \nLa zona menor debe ser menor a la zona mayor");
+							}
 						}
 						else
 						{
@@ -262,7 +297,7 @@ public class Controller {
 						int dia = Integer.parseInt(lector.next());
 						if(dia > 0 && dia <= 7)
 						{
-							
+
 						}
 						else
 						{
@@ -352,7 +387,7 @@ public class Controller {
 						int hora = Integer.parseInt(lector.next());
 						if(hora >= 0 && hora < 24)
 						{
-							
+
 						}
 						else
 						{
