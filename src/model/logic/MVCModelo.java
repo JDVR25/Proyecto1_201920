@@ -3,6 +3,8 @@ package model.logic;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
+
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
 import model.data_structures.ListaSencillamenteEncadenada;
@@ -24,6 +26,8 @@ public class MVCModelo {
 
 	private IEstructura<Viaje> meses;
 
+	private boolean mesesOrdenados;
+
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -34,20 +38,22 @@ public class MVCModelo {
 		dias = new ListaSencillamenteEncadenada<Viaje>();
 
 		meses = new ListaSencillamenteEncadenada<Viaje>();
+
+		mesesOrdenados = false;
 	}
 
 	//Requerimiento funcional 1
 	public void cargarDatos(int trimestre)
 	{
 		CSVReader reader = null;
-		try 
+		try
 		{
 			reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + trimestre + "-All-HourlyAggregate.csv"));
 			for(String[] param : reader)
 			{
 				try
 				{
-					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
+					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]),
 							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
 							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
 					horas.addLast(nuevo);
@@ -63,7 +69,7 @@ public class MVCModelo {
 			{
 				try
 				{
-					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
+					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]),
 							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
 							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
 					meses.addLast(nuevo);
@@ -79,7 +85,7 @@ public class MVCModelo {
 			{
 				try
 				{
-					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
+					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]),
 							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
 							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
 					dias.addLast(nuevo);
@@ -130,7 +136,18 @@ public class MVCModelo {
 	public int darZonaMenor()
 	{
 		//TODO pendiente
-		int respuesta = 0;
+		int respuesta = 999999999;
+		for(Viaje temp: meses)
+		{
+			if(temp.darIdDestino() < respuesta)
+			{
+				respuesta = temp.darIdDestino();
+			}
+			if(temp.darIDOrigen() < respuesta)
+			{
+				respuesta = temp.darIDOrigen();
+			}
+		}
 		return respuesta;
 	}
 
@@ -138,6 +155,17 @@ public class MVCModelo {
 	{
 		//TODO pendiente
 		int respuesta = 0;
+		for(Viaje temp: meses)
+		{
+			if(temp.darIdDestino() > respuesta)
+			{
+				respuesta = temp.darIdDestino();
+			}
+			if(temp.darIDOrigen() > respuesta)
+			{
+				respuesta = temp.darIDOrigen();
+			}
+		}
 		return respuesta;
 	}
 
@@ -148,6 +176,17 @@ public class MVCModelo {
 	{
 		//TODO pendiente
 		Viaje respuesta = null;
+		Iterator<Viaje> iterador = meses.iterator();
+		boolean encontrado = false;
+		while(iterador.hasNext() && !encontrado)
+		{
+			Viaje temp = iterador.next();
+			if(temp.darHoraOMesODia() == mes && temp.darIdDestino() == idDestino && temp.darIDOrigen() == idOrigen)
+			{
+				encontrado = true;
+				respuesta = temp;
+			}
+		}
 		return respuesta;
 	}
 
@@ -157,6 +196,22 @@ public class MVCModelo {
 	{
 		//TODO pendiente
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		if(!mesesOrdenados)
+		{
+			ordenarPorTiempo(meses);
+			mesesOrdenados = true;
+		}
+		Iterator<Viaje> iterador = meses.iterator();
+		int i = 0;
+		while(iterador.hasNext() && i < cuantos)
+		{
+			Viaje temp = iterador.next();
+			if(temp.darHoraOMesODia() == mes)
+			{
+				respuesta.addLast(temp);
+				i++;
+			}
+		}
 		return respuesta;
 	}
 
@@ -167,16 +222,16 @@ public class MVCModelo {
 		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
 		Stack<Viaje> zonaRango = new Stack<Viaje>();
 		Stack<Viaje> rangoZona = new Stack<Viaje>();
-		
+
 		viajes[0] = zonaRango;
 		viajes[1] = rangoZona;
-		
+
 		for(int i = zonaMayor; i >= zonaMenor; i--)
 		{
 			zonaRango.push(consultarViajeMes(mes, zona, i));
 			rangoZona.push(consultarViajeMes(mes, i, zona));
 		}
-		
+
 		return viajes;
 	}
 
@@ -188,7 +243,7 @@ public class MVCModelo {
 		Viaje respuesta = null;
 		return respuesta;
 	}
-	
+
 	//Se puede usar cola para lucirse
 	//Requerimiento funcional 6
 	public IEstructura<Viaje> viajesMayorTiempoDia(int dia, int cuantos)
@@ -197,7 +252,7 @@ public class MVCModelo {
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
 		return respuesta;
 	}
-	
+
 	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
 	//Requerimiento funcional 7 no requiere metodo adicional(usa el metodo que esta en req 5)
 	public Stack<Viaje>[] darViajesRangoZonasDia(int dia, int zona, int zonaMenor, int zonaMayor)
@@ -205,16 +260,16 @@ public class MVCModelo {
 		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
 		Stack<Viaje> zonaRango = new Stack<Viaje>();
 		Stack<Viaje> rangoZona = new Stack<Viaje>();
-		
+
 		viajes[0] = zonaRango;
 		viajes[1] = rangoZona;
-		
+
 		for(int i = zonaMayor; i >= zonaMenor; i--)
 		{
 			zonaRango.push(consultarViajeDia(dia, zona, i));
 			rangoZona.push(consultarViajeDia(dia, i, zona));
 		}
-		
+
 		return viajes;
 	}
 
@@ -226,7 +281,7 @@ public class MVCModelo {
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
 		return respuesta;
 	}
-	
+
 	//Requerimiento funcional 9
 	public IEstructura<Viaje> viajesMayorTiempoHora(int hora, int cuantos)
 	{
@@ -234,25 +289,41 @@ public class MVCModelo {
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
 		return respuesta;
 	}
-	
+
 	//Requerimiento funcional 10
 	public Viaje consultarViajeHora(int hora, int idOrigen, int idDestino)
 	{
 		//TODO pendiente
 		Viaje respuesta = null;
+		Iterator<Viaje> iterador = horas.iterator();
+		boolean encontrado = false;
+		while(iterador.hasNext() && !encontrado)
+		{
+			Viaje temp = iterador.next();
+			if(temp.darHoraOMesODia() == hora && temp.darIdDestino() == idDestino && temp.darIDOrigen() == idOrigen)
+			{
+				encontrado = true;
+				respuesta = temp;
+			}
+		}
 		return respuesta;
 	}
-	
+
 	public Queue<Viaje> viajesDeTodaHora(int idOrigen, int idDestino)
 	{
 		Queue<Viaje> respuesta = new Queue<Viaje>();
-		
+
 		for(int i = 0; i < 24; i++)
 		{
 			respuesta.enqueue(consultarViajeHora(i, idOrigen, idDestino));
 		}
-		
+
 		return respuesta;
 	}
-	
+
+	public void ordenarPorTiempo(IEstructura<Viaje> lista)
+	{
+		//TODO debe ordenarse de mayor a menor
+	}
+
 }

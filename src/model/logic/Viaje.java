@@ -44,7 +44,7 @@ public class Viaje
 		return idZonaDestino;
 	}
 	
-	public int darHora()
+	public int darHoraOMesODia()
 	{
 		return hora_mes_dia;
 	}

@@ -438,7 +438,7 @@ public class Controller {
 								{
 									if(temp != null)
 									{
-										System.out.println("--------- \nHora: " + temp.darHora());
+										System.out.println("--------- \nHora: " + temp.darHoraOMesODia());
 										System.out.println("Tiempo promedio : " + temp.darTiempoViaje());
 										System.out.println("Desviacion estandar del tiempo promedio : " + temp.darTiempoViaje());
 									}
