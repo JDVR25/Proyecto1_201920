@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
 import model.data_structures.ListaSencillamenteEncadenada;
+import model.data_structures.Queue;
 import model.data_structures.Stack;
 
 
@@ -21,7 +22,7 @@ public class MVCModelo {
 
 	private IEstructura<Viaje> dias;
 
-	private IEstructura<Viaje> mes;
+	private IEstructura<Viaje> meses;
 
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -32,7 +33,7 @@ public class MVCModelo {
 
 		dias = new ListaSencillamenteEncadenada<Viaje>();
 
-		mes = new ListaSencillamenteEncadenada<Viaje>();
+		meses = new ListaSencillamenteEncadenada<Viaje>();
 	}
 
 	//Requerimiento funcional 1
@@ -65,7 +66,7 @@ public class MVCModelo {
 					Viaje nuevo = new Viaje(Integer.parseInt(param[0]), Integer.parseInt(param[1]), 
 							Integer.parseInt(param[2]), Double.parseDouble(param[3]), Double.parseDouble(param[4]),
 							Double.parseDouble(param[5]), Double.parseDouble(param[6]));
-					mes.addLast(nuevo);
+					meses.addLast(nuevo);
 				}
 				catch(NumberFormatException e)
 				{
@@ -113,7 +114,7 @@ public class MVCModelo {
 
 	public int darNumViajesMes()
 	{
-		return mes.size();
+		return meses.size();
 	}
 
 	public int darNumViajesHora()
@@ -199,6 +200,23 @@ public class MVCModelo {
 	
 	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
 	//Requerimiento funcional 7 no requiere metodo adicional(usa el metodo que esta en req 5)
+	public Stack<Viaje>[] darViajesRangoZonasDia(int dia, int zona, int zonaMenor, int zonaMayor)
+	{
+		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
+		Stack<Viaje> zonaRango = new Stack<Viaje>();
+		Stack<Viaje> rangoZona = new Stack<Viaje>();
+		
+		viajes[0] = zonaRango;
+		viajes[1] = rangoZona;
+		
+		for(int i = zonaMayor; i >= zonaMenor; i--)
+		{
+			zonaRango.push(consultarViajeDia(dia, zona, i));
+			rangoZona.push(consultarViajeDia(dia, i, zona));
+		}
+		
+		return viajes;
+	}
 
 	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 8
@@ -222,6 +240,18 @@ public class MVCModelo {
 	{
 		//TODO pendiente
 		Viaje respuesta = null;
+		return respuesta;
+	}
+	
+	public Queue<Viaje> viajesDeTodaHora(int idOrigen, int idDestino)
+	{
+		Queue<Viaje> respuesta = new Queue<Viaje>();
+		
+		for(int i = 0; i < 24; i++)
+		{
+			respuesta.enqueue(consultarViajeHora(i, idOrigen, idDestino));
+		}
+		
 		return respuesta;
 	}
 	

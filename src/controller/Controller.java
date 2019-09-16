@@ -5,6 +5,8 @@ import java.util.Scanner;
 import com.sun.tracing.dtrace.ModuleName;
 
 import model.data_structures.IEstructura;
+import model.data_structures.ListaSencillamenteEncadenada;
+import model.data_structures.Queue;
 import model.data_structures.Stack;
 import model.logic.MVCModelo;
 import model.logic.Viaje;
@@ -19,10 +21,12 @@ public class Controller {
 	private MVCView view;
 
 	private boolean cargaRealizada;
-	
+
 	private int zonaMenorExistente;
-	
+
 	private int zonaMayorExistente;
+
+	private int trimestre;
 
 	/**
 	 * Crear la vista y el modelo del proyecto
@@ -52,6 +56,7 @@ public class Controller {
 				{
 					System.out.println("--------- \nIngrese un trimestre como un numero");
 					dato = lector.next();
+					trimestre = Integer.parseInt(dato);
 					modelo = new MVCModelo(); 
 					modelo.cargarDatos(Integer.parseInt(dato));
 					zonaMenorExistente = modelo.darZonaMenor();
@@ -95,7 +100,7 @@ public class Controller {
 							}
 							else
 							{
-								System.out.println("No hay informacion de los viajes que durante el mes " + mes + " que salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
+								System.out.println("No hay informacion de los viajes que durante el mes " + mes + " salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
 							}
 						}
 						else
@@ -179,13 +184,41 @@ public class Controller {
 								Stack<Viaje>[] pilas = modelo.darViajesRangoZonasMes(mes, zona1, zonaMenor, zonaMayor < zonaMayorExistente?zonaMayor: zonaMayorExistente);
 								Viaje zonaRango = null;
 								Viaje rangoZona = null;
-								while(!pilas[0].isEmpty() && !pilas[1].isEmpty())
+								while(!pilas[0].isEmpty() && !pilas[1].isEmpty() && zonaMenor <= zonaMayor)
 								{
 									zonaRango = pilas[0].pop();
 									rangoZona = pilas[1].pop();
-									
+
 									String lineaZonaRango = "";
 									String lineaRangoZona = "";
+									if(zonaRango != null)
+									{
+										lineaZonaRango += zonaRango.darTiempoViaje() + " de " + zonaRango.darIDOrigen() + " a " + zonaRango.darIdDestino();
+									}
+									else
+									{
+										lineaZonaRango += "No hay viajes de " + zona1 + " a " + zonaMenor;
+									}
+									if(rangoZona != null)
+									{
+										lineaRangoZona += rangoZona.darTiempoViaje() + " de " + rangoZona.darIDOrigen() + " a " + rangoZona.darIdDestino();
+									}
+									else
+									{
+										lineaRangoZona += "No hay viajes de " + zonaMenor + " a " + zona1;
+									}
+									System.out.println(lineaZonaRango +  " vs " + lineaRangoZona);
+
+									zonaMenor++;
+								}
+								if(zonaMayor > zonaMayorExistente)
+								{
+									int i = zonaMayorExistente;
+									while(i < zonaMayor)
+									{
+										System.out.println("No hay viajes de " + zona1 + " a " + i + " vs No hay viajes de " + i + " a " + zona1);
+										i++;
+									}
 								}
 							}
 							else
@@ -234,7 +267,7 @@ public class Controller {
 							}
 							else
 							{
-								System.out.println("No hay informacion de los viajes que durante el dia " + dia + " que salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
+								System.out.println("No hay informacion de los viajes que durante el dia " + dia + " salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
 							}
 						}
 						else
@@ -297,7 +330,68 @@ public class Controller {
 						int dia = Integer.parseInt(lector.next());
 						if(dia > 0 && dia <= 7)
 						{
+							System.out.println("--------- \nIngrese el identificador de una zona");
+							int zona1 = Integer.parseInt(lector.next());
 
+							System.out.println("--------- \nIngrese el identificador de la zona menor del rango de zonas");
+							int zonaMenor = Integer.parseInt(lector.next());
+
+							System.out.println("--------- \nIngrese el identificador de la zona mayor del rango de zonas");
+							int zonaMayor = Integer.parseInt(lector.next());
+							if(zonaMenor <= zonaMayor)
+							{
+								if(zonaMenor < zonaMenorExistente)
+								{
+									while(zonaMenor < zonaMenorExistente)
+									{
+										System.out.println("No hay viajes de " + zona1 + " a " + zonaMenor + " vs No hay viajes de " + zonaMenor + " a " + zona1);
+										zonaMenor++;
+									}
+								}
+								Stack<Viaje>[] pilas = modelo.darViajesRangoZonasDia(dia, zona1, zonaMenor, zonaMayor < zonaMayorExistente?zonaMayor: zonaMayorExistente);
+								Viaje zonaRango = null;
+								Viaje rangoZona = null;
+								while(!pilas[0].isEmpty() && !pilas[1].isEmpty() && zonaMenor <= zonaMayor)
+								{
+									zonaRango = pilas[0].pop();
+									rangoZona = pilas[1].pop();
+
+									String lineaZonaRango = "";
+									String lineaRangoZona = "";
+									if(zonaRango != null)
+									{
+										lineaZonaRango += zonaRango.darTiempoViaje() + " de " + zonaRango.darIDOrigen() + " a " + zonaRango.darIdDestino();
+									}
+									else
+									{
+										lineaZonaRango += "No hay viajes de " + zona1 + " a " + zonaMenor;
+									}
+									if(rangoZona != null)
+									{
+										lineaRangoZona += rangoZona.darTiempoViaje() + " de " + rangoZona.darIDOrigen() + " a " + rangoZona.darIdDestino();
+									}
+									else
+									{
+										lineaRangoZona += "No hay viajes de " + zonaMenor + " a " + zona1;
+									}
+									System.out.println(lineaZonaRango +  " vs " + lineaRangoZona);
+
+									zonaMenor++;
+								}
+								if(zonaMayor > zonaMayorExistente)
+								{
+									int i = zonaMayorExistente;
+									while(i < zonaMayor)
+									{
+										System.out.println("No hay viajes de " + zona1 + " a " + i + " vs No hay viajes de " + i + " a " + zona1);
+										i++;
+									}
+								}
+							}
+							else
+							{
+								System.out.println("--------- \nLa zona menor debe ser menor a la zona mayor");
+							}
 						}
 						else
 						{
@@ -321,15 +415,44 @@ public class Controller {
 				{
 					if(cargaRealizada)
 					{
-						System.out.println("--------- \nIngrese la hora");
-						int hora = Integer.parseInt(lector.next());
-						if(hora >= 0 && hora < 24)
+						System.out.println("--------- \nIngrese la hora inicial de la franja horaria");
+						int horaInicial = Integer.parseInt(lector.next());
+
+						System.out.println("--------- \nIngrese la hora final de la franja horaria");
+						int horaFinal = Integer.parseInt(lector.next());
+						if(horaInicial >= 0 && horaInicial < 24 && horaFinal >= 0 && horaFinal < 24)
 						{
-							//En lo posible no hacer antes de que el profesor responda
+							System.out.println("--------- \nIngrese el identificador de la zona de origen");
+							int zonaOrigen = Integer.parseInt(lector.next());
+
+							System.out.println("--------- \nIngrese el identificador de la zona de destino");
+							int zonaDestino = Integer.parseInt(lector.next());
+							if(zonaOrigen < zonaMenorExistente || zonaOrigen > zonaMayorExistente || zonaDestino < zonaMenorExistente || zonaDestino > zonaMayorExistente)
+							{
+								System.out.println("No hay informacion acerca de los viajes que empiezan en la zona de origen " + zonaOrigen + " y terminan en la zona destino " + zonaDestino);
+							}
+							else
+							{
+								IEstructura<Viaje> viajes = modelo.viajesFranjaHoraria(horaInicial, horaFinal, zonaOrigen, zonaDestino);
+								for(Viaje temp: viajes)
+								{
+									if(temp != null)
+									{
+										System.out.println("--------- \nHora: " + temp.darHora());
+										System.out.println("Tiempo promedio : " + temp.darTiempoViaje());
+										System.out.println("Desviacion estandar del tiempo promedio : " + temp.darTiempoViaje());
+									}
+									else
+									{
+										System.out.println("No hay informacion de los viajes que durante la hora " + horaInicial + " salieron de la zona " + zonaOrigen + " y llegaron a la zona "+ zonaDestino);
+									}
+									horaInicial++;
+								}
+							}
 						}
 						else
 						{
-							System.out.println("--------- \nLa hora debe ser en numero entre 0 y 23 ");
+							System.out.println("--------- \nLas hora deben ser en numeros entre 0 y 23 ");
 						}
 					}
 					else
@@ -383,15 +506,43 @@ public class Controller {
 				{
 					if(cargaRealizada)
 					{
-						System.out.println("--------- \nIngrese la hora");
-						int hora = Integer.parseInt(lector.next());
-						if(hora >= 0 && hora < 24)
-						{
+						System.out.println("--------- \nIngrese el identificador de la zona de origen");
+						int zonaOrigen = Integer.parseInt(lector.next());
 
-						}
-						else
+						System.out.println("--------- \nIngrese el identificador de la zona de destino");
+						int zonaDestino = Integer.parseInt(lector.next());
+
+						Queue<Viaje> viajes = modelo.viajesDeTodaHora(zonaOrigen, zonaDestino);
+						int hora = 00;
+
+						System.out.println("Aproximación en minutos de viajes entre zona origen y zona destino.");
+						System.out.println("Trimestre " + trimestre + " del 2018 detallado por cada hora del día");
+						System.out.println("Zona Origen: " + zonaOrigen);
+						System.out.println("Zona Destino: " + zonaDestino);
+						System.out.println("Hora|  # de minutos");
+						while(!viajes.isEmpty())
 						{
-							System.out.println("--------- \nLa hora debe ser en numero entre 0 y 23 ");
+							Viaje temp = viajes.dequeue();
+							String minutos = "";
+							if(temp != null)
+							{
+								int segundos = (int) temp.darTiempoViaje();
+								for(; segundos > 60; segundos -= 60)
+								{
+									minutos += "*";
+								}
+								if(segundos >= 30)
+								{
+									minutos += "*";
+								}
+								
+							}
+							else
+							{
+								minutos = "hora sin viajes";
+							}
+							System.out.println(hora + "  |  " + minutos);
+							hora++;
 						}
 					}
 					else

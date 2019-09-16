@@ -98,4 +98,9 @@ public class Queue<E>
 	{
 		return primerNodo.darElemento();
 	}
+	
+	public boolean isEmpty()
+	{
+		return cantidadElementos > 0? false: true;
+	}
 }
