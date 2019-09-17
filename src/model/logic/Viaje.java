@@ -1,6 +1,6 @@
 package model.logic;
 
-public class Viaje
+public class Viaje implements Comparable<Viaje>
 {
 	private int idZonaOrigen;
 	
@@ -67,5 +67,30 @@ public class Viaje
 	public double darDesviacionTGeometrico()
 	{
 		return desviacionEstandarTGeometrico;
+	}
+	
+	@Override
+	public int compareTo(Viaje o) {
+		int respuesta = 0;
+		if(tiempoPromedioViaje > o.darTiempoViaje())
+		{
+			respuesta = 1;
+		}
+		else if(tiempoPromedioViaje < o.darTiempoViaje())
+		{
+			respuesta = -1;
+		}
+		else if(tiempoPromedioViaje == o.darTiempoViaje())
+		{
+			if(desviacionEstandarTiempo > o.darDesviacionTiempo())
+			{
+				respuesta = 1;
+			}
+			if(desviacionEstandarTiempo < o.darDesviacionTiempo())
+			{
+				respuesta = -1;
+			}
+		}
+		return respuesta;
 	}
 }
