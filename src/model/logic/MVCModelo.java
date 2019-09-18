@@ -373,7 +373,7 @@ public class MVCModelo
 		
 		for (int i = horaInicial; i <= horaFinal; i++)
 		{
-			
+			respuesta.addLast(consultarViajeHora(i, idOrigen, idDestino)); 
 		}
 		
 		return respuesta;
