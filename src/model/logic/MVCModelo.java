@@ -8,6 +8,7 @@ import java.util.Iterator;
 import com.opencsv.CSVReader;
 import model.data_structures.IEstructura;
 import model.data_structures.ListaSencillamenteEncadenada;
+import model.data_structures.Nodo;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
 
@@ -16,15 +17,16 @@ import model.data_structures.Stack;
  * Definicion del modelo del mundo
  *
  */
-public class MVCModelo {
+public class MVCModelo 
+{
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IEstructura<Viaje> horas;
+	private ListaSencillamenteEncadenada<Viaje> horas;
 
-	private IEstructura<Viaje> dias;
+	private ListaSencillamenteEncadenada<Viaje> dias;
 
-	private IEstructura<Viaje> meses;
+	private ListaSencillamenteEncadenada<Viaje> meses;
 
 	private boolean mesesOrdenados;
 
@@ -43,6 +45,10 @@ public class MVCModelo {
 	}
 
 	//Requerimiento funcional 1
+	/**
+	 * Carga los datos del trimestre. 
+	 * @param trimestre. el numero del trimestre.
+	 */
 	public void cargarDatos(int trimestre)
 	{
 		CSVReader reader = null;
@@ -135,7 +141,6 @@ public class MVCModelo {
 
 	public int darZonaMenor()
 	{
-		//TODO pendiente
 		int respuesta = 999999999;
 		for(Viaje temp: meses)
 		{
@@ -153,7 +158,6 @@ public class MVCModelo {
 
 	public int darZonaMayor()
 	{
-		//TODO pendiente
 		int respuesta = 0;
 		for(Viaje temp: meses)
 		{
@@ -169,12 +173,18 @@ public class MVCModelo {
 		return respuesta;
 	}
 
-	//TODO modificar doc requerimientos funcionales con correciones
-	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 2
+	/**
+	 * Consultar el tiempo promedio de viaje y su desviación estándar de los viajes entre una
+		zona de origen y una zona destino para un mes dado. Reportar el caso especial en que No
+		exista información al respecto.
+	 * @param mes. Mes que el usuario desea consultar. 
+	 * @param idOrigen. Id de la zona de origen. 
+	 * @param idDestino. Id de la zona de destino. 
+	 * @return Viaje. El viaje. 
+	 */
 	public Viaje consultarViajeMes(int mes, int idOrigen, int idDestino)
 	{
-		//TODO pendiente
 		Viaje respuesta = null;
 		Iterator<Viaje> iterador = meses.iterator();
 		boolean encontrado = false;
@@ -190,11 +200,18 @@ public class MVCModelo {
 		return respuesta;
 	}
 
-	//Se puede usar cola para lucirse
 	//Requerimiento funcional 3
+	/**
+	 * Consultar la información de los N viajes con mayor tiempo promedio para un mes
+		dado. La información debe mostrarse ordenada de mayor a menor por el tiempo
+		promedio de los viajes. Mostrar los resultados indicando para cada viaje su zona origen,
+		zona destino, el tiempo promedio de viaje y su desviación estándar
+	 * @param mes. EL mes dado por usuario. 
+	 * @param cuantos. Cuantos viajes se desea consultar. 
+	 * @return lista con los mayores viajes. (Ordenados descendientemente)
+	 */
 	public IEstructura<Viaje> viajesMayorTiempoMes(int mes, int cuantos)
 	{
-		//TODO pendiente
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
 		if(!mesesOrdenados)
 		{
@@ -215,8 +232,18 @@ public class MVCModelo {
 		return respuesta;
 	}
 
-	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
-	//Requerimiento funcional 4 no requiere metodo adicional(usa el metodo que usa req1)
+	
+	//Requerimiento funcional 4 
+	/**
+	 * Comparar los tiempos promedios de los viajes para una zona dada contra cada zona X
+		en un rango de zonas dado [Zona menor, Zona Mayor] en ambos sentidos (zona dada –
+		zona X vs. zona X – zona dada) para un mes dado.
+	 * @param mes. Mes que se desea consultar. 
+	 * @param zona. Zona que se desea consultar. 
+	 * @param zonaMenor. Zona menor. 
+	 * @param zonaMayor. Zona mayor. 
+	 * @return
+	 */
 	public Stack<Viaje>[] darViajesRangoZonasMes(int mes, int zona, int zonaMenor, int zonaMayor)
 	{
 		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
@@ -235,26 +262,81 @@ public class MVCModelo {
 		return viajes;
 	}
 
-	//En lo posible no hacer antes de que el profesor responda
+
 	//Requerimiento funcional 5
+	/**
+	 * Consultar el tiempo promedio de viaje y su desviación estándar de los viajes entre una
+		zona de origen y una zona destino para un día dado de la semana. Reportar el caso
+		especial en que No exista información al respecto
+	 * @param dia. El dia que el usuario desea consultar. 
+	 * @param idOrigen. El id de la zona de origen. 
+	 * @param idDestino. EL id de la zona de destino. 
+	 * @return
+	 */
 	public Viaje consultarViajeDia(int dia, int idOrigen, int idDestino)
 	{
-		//TODO pendiente
 		Viaje respuesta = null;
+		Iterator<Viaje> iterador = dias.iterator();
+		boolean found = false;
+		while(iterador.hasNext() && !found)
+		{
+			Viaje temp = iterador.next();
+			
+			if(temp.darHoraOMesODia() == dia && temp.darIDOrigen() == idOrigen && temp.darIdDestino() == idDestino)
+			{
+				found = true;
+				respuesta = temp;
+			}
+		}
 		return respuesta;
 	}
 
-	//Se puede usar cola para lucirse
 	//Requerimiento funcional 6
+	/**
+	 * Consultar la información de los N viajes con mayor tiempo promedio para un día dado.
+		La información debe mostrarse ordenada de mayor a menor por el tiempo promedio de
+		los viajes. Mostrar los resultados indicando para cada viaje su zona origen, zona destino, el
+		tiempo promedio de viaje y su desviación estándar.
+	 * @param dia. Dia que se desea consultar
+	 * @param cuantos. Cuantos dias se dedsean consultar.
+	 * @return una lista de los viajes con mayor tiempo en un dia. 
+	 */
 	public IEstructura<Viaje> viajesMayorTiempoDia(int dia, int cuantos)
 	{
-		//TODO pendiente
-		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		ListaSencillamenteEncadenada<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		
+		ordenarPorTiempo(dias);
+		
+		Iterator<Viaje> iterador = dias.iterator();
+		
+		
+		for(int i = 0; i < cuantos && iterador.hasNext(); )
+		{
+			Viaje temp = iterador.next();
+			
+			if(temp.darHoraOMesODia() == dia)
+			{
+				
+				respuesta.addLast(temp);
+				
+				i++;
+				
+			}
+		}
 		return respuesta;
 	}
 
-	//Hay una forma de hacerlo con pila para lucirse pero es mas complicada
 	//Requerimiento funcional 7 no requiere metodo adicional(usa el metodo que esta en req 5)
+	/**
+	 * Comparar los tiempos promedios de los viajes para una zona dada contra cada zona X
+		en un rango de zonas dado [Zona menor, Zona Mayor] en ambos sentidos (zona dada –
+		zona X vs. zona X – zona dada) para un día dado.
+	 * @param dia
+	 * @param zona
+	 * @param zonaMenor
+	 * @param zonaMayor
+	 * @return
+	 */
 	public Stack<Viaje>[] darViajesRangoZonasDia(int dia, int zona, int zonaMenor, int zonaMayor)
 	{
 		Stack<Viaje>[] viajes = (Stack<Viaje>[]) new Object[2];
@@ -273,27 +355,70 @@ public class MVCModelo {
 		return viajes;
 	}
 
-	//En lo posible no hacer antes de que el profesor responda
 	//Requerimiento funcional 8
+	/**
+	 * Consultar los viajes entre una zona de origen y una zona destino en una franja horaria
+		(hora inicial – hora final) dada. La franja horaria se define con horas enteras. Mostrar los
+		viajes indicando el tiempo promedio de viaje y su desviación estándar para cada hora
+		entera iniciando en la hora inicial y terminando en la hora final.
+	 * @param horaInicial
+	 * @param horaFinal
+	 * @param idOrigen
+	 * @param idDestino
+	 * @return una lista de viajes.
+	 */
 	public IEstructura<Viaje> viajesFranjaHoraria(int horaInicial, int horaFinal, int idOrigen, int idDestino)
 	{
-		//TODO pendiente
 		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		
+		for (int i = horaInicial; i <= horaFinal; i++)
+		{
+			
+		}
+		
 		return respuesta;
 	}
 
 	//Requerimiento funcional 9
+	
+	/**
+	 * Consultar la información de los N viajes con mayor tiempo promedio para una hora
+		dada. La información debe mostrarse ordenada de mayor a menor por el tiempo
+		promedio de los viajes. Mostrar los resultados indicando para cada viaje su zona origen,
+		zona destino, el tiempo promedio de viaje y su desviación estándar.
+	 * @param hora
+	 * @param cuantos
+	 * @return una lista de viajes. 
+	 */
 	public IEstructura<Viaje> viajesMayorTiempoHora(int hora, int cuantos)
 	{
-		//TODO pendiente
-		IEstructura<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		ListaSencillamenteEncadenada<Viaje> respuesta = new ListaSencillamenteEncadenada<Viaje>();
+		
+		ordenarPorTiempo(horas);
+		
+		Iterator<Viaje> iterador = horas.iterator();
+		
+		
+		for(int i = 0; i < cuantos && iterador.hasNext(); )
+		{
+			Viaje temp = iterador.next();
+			
+			if(temp.darHoraOMesODia() == hora)
+			{
+				
+				respuesta.addLast(temp);
+				
+				i++;
+				
+			}
+		}
 		return respuesta;
 	}
 
 	//Requerimiento funcional 10
+	
 	public Viaje consultarViajeHora(int hora, int idOrigen, int idDestino)
 	{
-		//TODO pendiente
 		Viaje respuesta = null;
 		Iterator<Viaje> iterador = horas.iterator();
 		boolean encontrado = false;
@@ -309,6 +434,15 @@ public class MVCModelo {
 		return respuesta;
 	}
 
+	/**
+	 * Generar una gráfica ASCII que muestre el tiempo promedio de los viajes entre una
+		zona origen y una zona destino para cada hora del día. Cada * en la gráfica corresponde a
+		1 minuto. 
+	 * @param hora. 
+	 * @param idOrigen
+	 * @param idDestino
+	 * @return Viaje. 
+	 */
 	public Queue<Viaje> viajesDeTodaHora(int idOrigen, int idDestino)
 	{
 		Queue<Viaje> respuesta = new Queue<Viaje>();
@@ -321,9 +455,75 @@ public class MVCModelo {
 		return respuesta;
 	}
 
-	public void ordenarPorTiempo(IEstructura<Viaje> lista)
+	/**
+	 * Ordena por tiempo.
+	 * @param lista.
+	 */
+	public void ordenarPorTiempo(ListaSencillamenteEncadenada<Viaje> lista)
 	{
-		//TODO debe ordenarse de mayor a menor
+		//Creacion del arreglo a ordenar, no cuenta como tiempo de ordenamiento
+		Object[] arreglo = lista.toArray();
+		Object[] aux = new Object[lista.size()];
+		//Medicion del tiempo
+		long tInicial = System.currentTimeMillis();
+
+		//Aqui poner el ordenamiento
+		mergeSort(arreglo, aux, 0, lista.size() -1);
+
+		long tFinal = System.currentTimeMillis();
+		//Guardado del arreglo ordenado, no cuenta como tiempo de ordenamiento
+		Nodo<Viaje> temp = lista.darNodo(0);
+		for(int i = 0; i < arreglo.length; i++)
+		{
+			temp.cambiarElemento((Viaje) arreglo[i]);
+			temp = temp.darSiguiente();
+		}
+
 	}
 
+	public void mergeSort(Object[] arreglo, Object[] aux, int inicio, int last)
+	{
+		if(inicio < last)
+		{
+			int mitad = (inicio + last) / 2;
+			mergeSort(arreglo, aux, inicio, mitad);
+			mergeSort(arreglo, aux, mitad + 1, last);
+			merge(arreglo, aux, inicio, mitad, last);
+		}
+	}
+	
+	public void merge(Object[] arreglo, Object[] aux, int inicio, int midle, int last)
+	{
+		
+		for(int i = inicio; i <= last; i++)
+		{
+			aux[i] = (Viaje) arreglo[i];
+		}
+		
+		int i = inicio;
+		int l = midle+1;
+		for(int pos = inicio; pos <= last; pos++)
+		{
+			if(i > midle)
+			{
+				arreglo[pos] = aux[l];
+				l++;
+			}
+			else if(l > last)
+			{
+				arreglo[pos] = aux[i];
+				i++;
+			}
+			else if(((Viaje) aux[i]).compareTo((Viaje) aux[l]) > 0)
+			{
+				arreglo[pos] = aux[i];
+				i++;
+			}
+			else
+			{
+				arreglo[pos] = aux[l];
+				l++;
+			}
+		}
+	}
 }
